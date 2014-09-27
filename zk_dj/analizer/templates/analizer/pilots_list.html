@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<title>Pilots list</title>
+	</head>
+	<body>
+		{% if error_message %}
+			<p> {{error_message }} </p>
+		{% endif %}  
+		
+		<p> wtf? </p>
+		<ul>
+			{% for i in pilots %}
+				<li> pilot: {{i}} </li>
+			{% endfor %}
+		</ul>
+
+	</body>
+</html>

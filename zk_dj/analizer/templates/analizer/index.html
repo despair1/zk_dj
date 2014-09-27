@@ -8,14 +8,14 @@
 		{% endif %}  
 		<a href="{% url 'analizer:list' %}"> to to </a>
 		<p> wtf? </p>
-		{% comment %}
+		
 		<form action="{% url 'analizer:list' %}" method="post">
 			{% csrf_token %}
 			<textarea name="names" rows="10" cols="70"></textarea><br/>
 			<input type="submit" name="send_button" value="pilots">
 			<input type="submit" name="send_button" value="corps">
 			<input type="submit" name="send_button" value="ally">
-		</form> {% endcomment %}
+		</form> 
 		<!-- <p>This is a test.</p> -->
 	</body>
 </html>
