@@ -7,14 +7,18 @@ class IndexTests(TestCase):
     def test_index_with_corps(self):
         response=self.client.get(reverse("analizer:index"))
         self.assertEqual(response.status_code,200)
+        
         pst={"send_button":"pilots","names":"maar dagon"}
         response=self.client.post(reverse("analizer:list"),pst)
         self.assertEqual(response.status_code,200)
+        self.assertContains(response, "pilot: maar dagon")
+        
         pst={"send_button":"corps"}
         response=self.client.post(reverse("analizer:list"),pst,follow=True)
         self.assertEqual(response.status_code,200)
         self.assertContains(response, "Unsupported:")
         print response.redirect_chain
+        
         pst={"send_button":"pilots","names":""}
         response=self.client.post(reverse("analizer:list"),pst)
         self.assertEqual(response.status_code,200)
