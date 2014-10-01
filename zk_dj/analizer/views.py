@@ -9,6 +9,10 @@ def index(request):
     return render(request,"analizer/index.html",{"error_message1":"",
                                                  }) 
     return HttpResponse("you in index")
+def pilot_detail(request):
+    return render(request,"analizer/index.html",{"error_message":
+                                                     "Unsupported: ",
+                                                     })
 def list_names(request):
     send_button=request.POST["send_button"]
     if send_button=="pilots":
