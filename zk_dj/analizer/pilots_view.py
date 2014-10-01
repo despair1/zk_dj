@@ -8,11 +8,18 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from eve_api import character_id
 from analizer.models import pilot
+import re 
 
 def list_pilots(request):
-    names_list=request.POST["names"].split("  ")
+    names_list=request.POST["names"]
+    #names_list=re.sub(r"&#\w\w;","  ",names_list)
+    #names_list=names_list.rstrip()
+    s=names_list.replace("\r\n","  ")
+    names_list=s.split("  ")
+    print "names list",names_list
     t=[]
     for name in names_list:
+        if not name: continue
         d={}
         d["name"]=name
         id1=0
