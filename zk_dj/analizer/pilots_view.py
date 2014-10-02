@@ -24,6 +24,7 @@ def list_pilots(request):
         d["name"]=name
         id1=0
         pilots_list=pilot.objects.filter(name__iexact=name)
+        #pilot.objects.filter(pk=0).delete()
         if len(pilots_list)==1:
             id1=pilots_list[0].id
         else:
@@ -31,10 +32,11 @@ def list_pilots(request):
             for i1 in pilots_list:
                 if i1["name"].upper()== name.upper():
                     id1=int(i1["characterID"])
-                    pilot(name=name,id=id1).save()
+                    if int(id1):
+                        pilot(name=name,id=id1).save()
                     break
                     
-        if id1:
+        if int(id1):
             d["id"]=id1
             t.append(d)
     for i in t:

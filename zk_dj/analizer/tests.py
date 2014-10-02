@@ -12,6 +12,7 @@ class IndexTests(TestCase):
         response=self.client.post(reverse("analizer:list"),pst)
         self.assertEqual(response.status_code,200)
         self.assertContains(response, "pilot: maar dagon")
+        self.assertContains(response, "91094600")
         
         pst={"send_button":"corps"}
         response=self.client.post(reverse("analizer:list"),pst,follow=True)
