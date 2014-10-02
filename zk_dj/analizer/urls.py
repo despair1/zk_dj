@@ -10,7 +10,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns=(url(r"^$",views.index,name="index"),
              url(r"^list/",views.list_names,name="list"),
-             url(r"^pilot_detail/(?P<id>[0-9]+)/",
+             url(r"^pilot_detail/(?P<pilot_id>[0-9]+)/",
                  views.pilot_detail,name="pilot_detail")
              )
 

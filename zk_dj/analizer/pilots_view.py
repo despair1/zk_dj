@@ -27,13 +27,15 @@ def list_pilots(request):
         #pilot.objects.filter(pk=0).delete()
         if len(pilots_list)==1:
             id1=pilots_list[0].id
+            d["name"]=pilots_list[0].name
         else:
             pilots_list=character_id.get_id_by_pilot_name(name)
             for i1 in pilots_list:
                 if i1["name"].upper()== name.upper():
                     id1=int(i1["characterID"])
+                    d["name"]=i1["name"]
                     if int(id1):
-                        pilot(name=name,id=id1).save()
+                        pilot(name=i1["name"],id=id1).save()
                     break
                     
         if int(id1):

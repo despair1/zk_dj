@@ -10,7 +10,7 @@
 		<p> wtf? </p>
 		<ul>
 			{% for i in pilots %}
-				<li> pilot: {{i.name}} {{i.id}} <br/>
+				<li> 
 				<a href="{% url 'analizer:pilot_detail' i.id %}">{{i.name}}</a>
 				</li>
 			{% endfor %}
