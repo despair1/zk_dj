@@ -9,6 +9,10 @@ def index(request):
     return render(request,"analizer/index.html",{"error_message1":"",
                                                  }) 
     return HttpResponse("you in index")
+def corp_detail(request,corp_id):
+    return render(request,"analizer/index.html",{"error_message":
+                                                     "Unsupported: ",
+                                                     })
 def pilot_detail(request,pilot_id):
     return pilot_detail_view.pilot_detail(request,pilot_id)
     return render(request,"analizer/index.html",{"error_message":

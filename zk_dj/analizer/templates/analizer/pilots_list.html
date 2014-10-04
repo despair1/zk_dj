@@ -12,6 +12,9 @@
 			{% for i in pilots %}
 				<li> 
 				<a href="{% url 'analizer:pilot_detail' i.id %}">{{i.name}}</a>
+				{% if i.corp_id %}
+					<a href="{% url 'analizer:corp_detail' i.corp_id %}">{{i.corp_name}}</a>
+				{% endif %}
 				</li>
 			{% endfor %}
 		</ul>

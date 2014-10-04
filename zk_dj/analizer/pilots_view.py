@@ -28,6 +28,11 @@ def list_pilots(request):
         if len(pilots_list)==1:
             id1=pilots_list[0].id
             d["name"]=pilots_list[0].name
+            c=pilots_list[0].corp
+            if c:
+                print c.name,c.id
+                d["corp_name"]=c.name
+                d["corp_id"]=c.id
         else:
             pilots_list=character_id.get_id_by_pilot_name(name)
             for i1 in pilots_list:

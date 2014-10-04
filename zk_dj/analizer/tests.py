@@ -50,3 +50,7 @@ class IndexTests(TestCase):
         self.assertEqual(response.status_code,200)
         #print response
         self.assertContains(response, "Liza Calm")
+        
+    def test_corp_detail(self):
+        response=self.client.get(reverse("analizer:corp_detail",kwargs={"corp_id":"01"}))
+        self.assertContains(response, "Unsupported:")
