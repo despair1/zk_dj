@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import pilot_detail_view
-
+import statprof
 # Create your views here.
 from analizer.pilots_view import list_pilots
 
@@ -14,6 +14,13 @@ def corp_detail(request,corp_id):
                                                      "Unsupported: ",
                                                      })
 def pilot_detail(request,pilot_id):
+    return pilot_detail_view.pilot_detail(request,pilot_id)
+    statprof.start()
+    try:
+        return pilot_detail_view.pilot_detail(request,pilot_id)
+    finally:
+        statprof.stop()
+        statprof.display()
     return pilot_detail_view.pilot_detail(request,pilot_id)
     return render(request,"analizer/index.html",{"error_message":
                                                      "Unsupported: ",

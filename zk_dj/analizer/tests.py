@@ -5,8 +5,17 @@ from django.core.urlresolvers import reverse
 """
 ./manage.py dumpdata analizer --format=yaml --indent=4 > analizer/fixtures/analizer.yaml
 """
+from django.test import Client
+import hotshot
+
+
 class IndexTests(TestCase):
     fixtures=['analizer']
+    def test_prof(self):
+        c = Client()
+        profiler = hotshot.Profile("yourprofile.prof")  # saves a logfile to your pwd
+        profiler.runcall(c.get, reverse("analizer:pilot_detail",kwargs={"pilot_id":"90376921"}))
+        profiler.close()
     def test_index_with_corps(self):
         "combo tests"
         response=self.client.get(reverse("analizer:index"))
@@ -45,11 +54,11 @@ class IndexTests(TestCase):
         self.assertEqual(response.status_code,200)
         #print response
         self.assertContains(response, "Bheskagor")
-        
+        """
         response=self.client.get(reverse("analizer:pilot_detail",kwargs={"pilot_id":"90376921"}))
         self.assertEqual(response.status_code,200)
         #print response
-        self.assertContains(response, "Liza Calm")
+        self.assertContains(response, "Liza Calm") """
         
     def test_corp_detail(self):
         response=self.client.get(reverse("analizer:corp_detail",kwargs={"corp_id":"01"}))

@@ -5,11 +5,22 @@ Created on Oct 2, 2014
 '''
 
 from django.shortcuts import render,get_object_or_404
-from models import pilot,corp
+from models import pilot,corp,kill
 from tools.get_json import get_json_pilot
 from json_kills import json_utils
 from django.db import transaction
+from tools.json2db import add_json2db
+from profiling import profile
+import sys
 #from web_test.pilot_header1 import html_kills_loss_time
+class twrite():
+    def __init__(self):
+        self.f=open("/tmp/t_tstats","w")
+    def write(self,s):
+        print s
+        self.f.write(s)
+    def __del__(self):
+        self.f.close()
 
 def get_victim_list(kills_data):
     victim_list=[]
@@ -33,7 +44,7 @@ def add_pilots_corps_to_db(kills_data):
                   name=i["victim"]["characterName"],
                   corp=c).save()
             
-
+#@profile(stats=True, stats_buffer=twrite())
 def pilot_detail(request,pilot_id):
     pilot1={}
     pilot1["id"]=pilot_id
@@ -42,14 +53,18 @@ def pilot_detail(request,pilot_id):
     pilot1["name"]=name.name
     
     kills_data=get_json_pilot(characterID=pilot_id)
-    add_pilots_corps_to_db(kills_data)
+    #add_pilots_corps_to_db(kills_data)
+    print "add_json"
+    add_json2db(kills_data,pilot_id=pilot_id)
     
     kills,loss=json_utils.divide_kill_lose(pilotID=pilot_id, kills_data=kills_data)
     pilot1["number_kills"]=len(kills)
     pilot1["number_loss"]=len(loss)
     pilot1["last_kill_time"]=json_utils.get_last_kill_time(kills_data=kills_data)
-    
+    loss=kill.objects.filter(characterID=pilot_id)
+    print "pre render"
     return render(request,"analizer/pilot_detail.html",
                   {"pilot":pilot1,
-                   "victim_list":get_victim_list(kills_data)
+                   "victim_list":get_victim_list(kills_data),
+                   "loss":loss,
                    })    
