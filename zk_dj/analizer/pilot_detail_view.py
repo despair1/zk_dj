@@ -12,7 +12,30 @@ from django.db import transaction
 from tools.json2db import add_json2db
 from profiling import profile
 import sys
+from django.http import Http404
+from analizer.tools.db_get_pilot import get_pilot_by_id
+#from analizer.tools.db_add_json import db_add_json
 #from web_test.pilot_header1 import html_kills_loss_time
+import hotshot
+def profile(log_file):
+    
+    def _outer(f):
+        def _inner(*args, **kwargs):
+            
+            
+            
+
+            prof = hotshot.Profile(log_file)
+            try:
+                ret = prof.runcall(f, *args, **kwargs)
+            finally:
+                prof.close()
+            return ret
+
+        return _inner
+    return _outer
+
+
 class twrite():
     def __init__(self):
         self.f=open("/tmp/t_tstats","w")
@@ -45,17 +68,22 @@ def add_pilots_corps_to_db(kills_data):
                   corp=c).save()
             
 #@profile(stats=True, stats_buffer=twrite())
+@profile("myprof")
 def pilot_detail(request,pilot_id):
-    pilot1={}
-    pilot1["id"]=pilot_id
+    print "in detail"
+    pilot1=get_pilot_by_id(pilot_id)
+    if not pilot1: raise Http404
+    #pilot1["id"]=pilot_id
     name=get_object_or_404(pilot,id=pilot_id)
     #name=pilot.objects.filter(pk=pilot_id)
-    pilot1["name"]=name.name
-    
+    #pilot1["name"]=name.name
+    print "get json"
     kills_data=get_json_pilot(characterID=pilot_id)
-    #add_pilots_corps_to_db(kills_data)
     print "add_json"
-    add_json2db(kills_data,pilot_id=pilot_id)
+    #db_add_json(kills_data)
+    #add_pilots_corps_to_db(kills_data)
+    print "add_json1"
+    #add_json2db(kills_data,pilot_id=pilot_id)
     
     kills,loss=json_utils.divide_kill_lose(pilotID=pilot_id, kills_data=kills_data)
     pilot1["number_kills"]=len(kills)

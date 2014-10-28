@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title>{{pilot.pilot_name}}</title>
+	</head>
+	<body>
+		{% if error_message %}
+			<p> {{error_message }} </p>
+		{% endif %}  
+		
+		<p> wtf4? </p>
+		<p> kills: {{pilot.number_kills}} 
+			loss: {{pilot.number_loss}} 
+			last kill: {{pilot.last_kill_time}}
+		</p>
+		<p> {{pilot.pilot_id}} {{pilot.pilot_name}} </p>
+		<table><tr>
+		{% for i in time_slice%}
+			<td> {{i.hour}}h {{i.kills}} kills ; </td>
+		{% endfor %}
+		</tr></table>
+		<table>
+		{% for i in victim_list %}
+			<tr> 
+				<td><a href="{% url 'analizer:pilot_detail' i.pilot_id %}">{{i.pilot_name}}</a></td>
+				<td> {{i.corp_name}} </td> 
+				<td> {{i.ship_type}} </td>
+				<td> {{i.kill_time}} </td>
+			</tr>
+		{% endfor %}
+		</table>
+
+
+	</body>
+</html>

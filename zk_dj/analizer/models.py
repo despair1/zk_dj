@@ -4,9 +4,6 @@ from django.db import models
 class pilot(models.Model):
     id=models.IntegerField(primary_key=True)
     name=models.CharField(max_length=255)
-    corp=models.ForeignKey("corp",related_name="pilots",
-                           null=True, default=None,
-                           on_delete=models.SET_NULL)
     cached=models.DateTimeField(null=True, default=None)
     
 class corp(models.Model):
@@ -25,20 +22,18 @@ class alli(models.Model):
    u'shipTypeID': 4302, u'corporationName': u'1UltraNova1', u'characterID': 1000551122, u'damageDone': 7692} """
    
 class attacker(models.Model):
-    corporationID=models.ForeignKey("corp",related_name="attackers",
-                                    )
-    allianceID=models.ForeignKey("alli",related_name="attackers",
-                                 null=True
-                                    )
-    characterID=models.ForeignKey("pilot",related_name="attakers")
+    corporationID=models.IntegerField()
+    allianceID=models.IntegerField()
+    characterID=models.IntegerField()
     killID=models.ForeignKey("kill",related_name="kills")
     securityStatus=models.FloatField()
     weaponTypeID=models.IntegerField()
     finalBlow=models.IntegerField()
     shipTypeID=models.IntegerField()
     corporationName=models.CharField(max_length=255)
-    characterName=models.CharField(max_length=255)
-    allianceName=models.CharField(max_length=255)
+    characterName=models.CharField(max_length=255,null=True)
+    allianceName=models.CharField(max_length=255,null=True)
+    killTime=models.DateTimeField()
     
 """ keys  [u'killID', u'killTime', u'zkb', u'attackers', u'victim', u'items', u'solarSystemID', u'moonID']
  key  victim
@@ -51,11 +46,8 @@ class kill(models.Model):
     killTime=models.DateTimeField()
     solarSystemID=models.IntegerField()
     corporationName=models.CharField(max_length=255)
-    characterName=models.CharField(max_length=255)
-    allianceName=models.CharField(max_length=255)
-    corporationID=models.ForeignKey("corp",related_name="victim",
-                                    )
-    allianceID=models.ForeignKey("alli",related_name="victim",
-                                 null=True,
-                                    )   
-    characterID=models.ForeignKey("pilot",related_name="victim")
+    characterName=models.CharField(max_length=255,null=True)
+    allianceName=models.CharField(max_length=255,null=True)
+    corporationID=models.IntegerField()
+    allianceID=models.IntegerField()
+    characterID=models.IntegerField()

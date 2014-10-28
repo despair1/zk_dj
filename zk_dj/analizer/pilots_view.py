@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from eve_api import character_id
 from analizer.models import pilot
 import re 
+from analizer.tools.db_get_pilot import get_pilot_from_db
 
 def list_pilots(request):
     names_list=request.POST["names"]
@@ -22,6 +23,13 @@ def list_pilots(request):
         if not name: continue
         d={}
         d["name"]=name
+        if get_pilot_from_db(d):
+            """TODO add kills attackers to search
+            """
+            t.append(d)
+            continue
+        else:
+            """
         id1=0
         pilots_list=pilot.objects.filter(name__iexact=name)
         #pilot.objects.filter(pk=0).delete()
@@ -33,7 +41,9 @@ def list_pilots(request):
                 print c.name,c.id
                 d["corp_name"]=c.name
                 d["corp_id"]=c.id
-        else:
+                """
+        
+        #else:
             pilots_list=character_id.get_id_by_pilot_name(name)
             for i1 in pilots_list:
                 if i1["name"].upper()== name.upper():
@@ -41,11 +51,14 @@ def list_pilots(request):
                     d["name"]=i1["name"]
                     if int(id1):
                         pilot(name=i1["name"],id=id1).save()
+                        d["id"]=id1
+                        t.append(d)
                     break
-                    
+            
+        """            
         if int(id1):
             d["id"]=id1
-            t.append(d)
+            t.append(d) """
     for i in t:
         print i["name"],i["id"]
     names_list=t
