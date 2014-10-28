@@ -13,11 +13,21 @@
 			last kill: {{pilot.last_kill_time}}
 		</p>
 		<p> {{pilot.pilot_id}} {{pilot.pilot_name}} </p>
+		<h4> Time Slice </h4>
 		<table><tr>
 		{% for i in time_slice%}
 			<td> {{i.hour}}h {{i.kills}} kills ; </td>
 		{% endfor %}
 		</tr></table>
+		<h4> Mates </h4>
+		<table>
+		{% for i in mates %}
+			<tr>
+				<td><a href="{% url 'analizer:pilot_detail' i.id %}">{{i.name}}</a></td>
+				<td>{{i.kills}}</td>
+			</tr>
+		{% endfor %}
+		</table>
 		<table>
 		{% for i in victim_list %}
 			<tr> 

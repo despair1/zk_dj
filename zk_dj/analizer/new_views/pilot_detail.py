@@ -6,6 +6,7 @@ Created on Oct 25, 2014
 #import sys
 #sys.path.append("/home/despair1/git/czk/2/bpczk/Debug")
 from test2 import tt
+from json_kills.time1 import time_slice
 base_request="https://zkillboard.com/api/"
 from datetime import timedelta,date
 from analizer.tools.db_get_pilot import get_pilot_by_id
@@ -32,17 +33,34 @@ def pilot_detail(request,pilot_id):
     cursor.execute("""select extract( hour from "killTime" ) as a1,count(*) as cnt from analizer_kill
     where "characterID"=%s  group by a1 having count(*)>%s order by cnt desc;""",[pilot_id,sign_kill])
     r=cursor.fetchall()
-    ts=[]
+    time_slice=[]
     for i in r:
         d={}
         d["hour"]=int(i[0])
         d["kills"]=i[1]
-        ts.append(d)
+        time_slice.append(d)
         #print i
+    cursor.execute("""select "characterID","characterName",count(*) from analizer_attacker 
+    where "characterID" <> %s and
+    "killID_id" in     (select "killID_id" from analizer_attacker where "characterID"=%s)
+     
+    group by "characterID","characterName" order by count(*) desc;
+    """,[pilot_id,pilot_id])
+    r=cursor.fetchall()[0:10]
+    mates=[]
+    for i in r:
+        d={}
+        if int(i[0])==int(pilot_id): continue
+        d["id"]=i[0]
+        d["name"]=i[1]
+        d["kills"]=i[2]
+        mates.append(d)
+        #print d
     
     #pilot1["id"]=pilot_id
     return render(request,"analizer/pilot_detail1.html",
                   {"pilot":pilot1,
-                   "time_slice":ts,
+                   "time_slice":time_slice,
+                   "mates":mates,
                    
                    })    
