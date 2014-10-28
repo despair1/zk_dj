@@ -28,6 +28,13 @@
 			</tr>
 		{% endfor %}
 		</table>
+		{% if mates_pages.prev %}
+			<a href="{% url 'analizer:pilot_detail' mates_pages.pilot %}?mate_page={{mates_pages.prev}}"> prev </a>
+		{% endif %}
+		{% if mates_pages.next %}
+			<a href="{% url 'analizer:pilot_detail' mates_pages.pilot %}?mate_page={{mates_pages.next}}"> next </a>
+		{% endif %}
+		
 		<table>
 		{% for i in victim_list %}
 			<tr> 

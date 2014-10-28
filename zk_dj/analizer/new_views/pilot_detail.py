@@ -15,6 +15,8 @@ from django.shortcuts import render,Http404
 from analizer.models import kill,attacker
 from django.db import connection
 sign_kill=2
+mates_per_page=15
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def pilot_detail(request,pilot_id):
     pilot1=get_pilot_by_id(pilot_id)
@@ -33,6 +35,8 @@ def pilot_detail(request,pilot_id):
     cursor.execute("""select extract( hour from "killTime" ) as a1,count(*) as cnt from analizer_kill
     where "characterID"=%s  group by a1 having count(*)>%s order by cnt desc;""",[pilot_id,sign_kill])
     r=cursor.fetchall()
+    
+        
     time_slice=[]
     for i in r:
         d={}
@@ -40,21 +44,36 @@ def pilot_detail(request,pilot_id):
         d["kills"]=i[1]
         time_slice.append(d)
         #print i
-    cursor.execute("""select "characterID","characterName",count(*) from analizer_attacker 
-    where "characterID" <> %s and
+    cursor.execute("""select "characterID","characterName",count(*) as cnt from analizer_attacker 
+    where "characterID" <> %s and "characterID" <> 0 and
     "killID_id" in     (select "killID_id" from analizer_attacker where "characterID"=%s)
      
     group by "characterID","characterName" order by count(*) desc;
     """,[pilot_id,pilot_id])
-    r=cursor.fetchall()[0:10]
+    r=cursor.fetchall()
+    p=Paginator(r,mates_per_page)
+    mate_page = request.GET.get('mate_page', 1)
+    try:
+        page=p.page(mate_page)
+    except PageNotAnInteger:
+        page=p.page(1)
+    except EmptyPage:
+        page=p.page(p.num_pages)
     mates=[]
-    for i in r:
+    for i in page.object_list:
         d={}
-        if int(i[0])==int(pilot_id): continue
+        #if int(i[0])==int(pilot_id): continue
         d["id"]=i[0]
         d["name"]=i[1]
         d["kills"]=i[2]
+        print d
         mates.append(d)
+    mates_pages={}
+    mates_pages["pilot"]=pilot_id
+    if page.has_next():
+        mates_pages["next"]=page.next_page_number()
+    if page.has_previous():
+        mates_pages["prev"]=page.previous_page_number()
         #print d
     
     #pilot1["id"]=pilot_id
@@ -62,5 +81,6 @@ def pilot_detail(request,pilot_id):
                   {"pilot":pilot1,
                    "time_slice":time_slice,
                    "mates":mates,
+                   "mates_pages":mates_pages,
                    
                    })    
