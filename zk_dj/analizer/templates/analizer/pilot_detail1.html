@@ -36,6 +36,24 @@
 			<a href="{% url 'analizer:pilot_detail' mates_pages.pilot %}?mate_page={{mates_pages.next}}"> next </a>
 		{% endif %}
 		
+		<h4> Kill groups </h4>
+		<table>
+			<tr>
+				<td> solo </td>
+				<td> 2-5 </td>
+				<td> 6-15 </td>
+				<td> 16-35 </td>
+				<td> blob </td>
+			</tr>
+			<tr>
+				<td>{{number_mates.solo}}</td>
+				<td>{{number_mates.5}}</td>
+				<td>{{number_mates.15}}</td>
+				<td>{{number_mates.35}}</td>
+				<td>{{number_mates.blob}}</td>
+			</tr>
+		</table>
+		
 		<table>
 		{% for i in victim_list %}
 			<tr> 

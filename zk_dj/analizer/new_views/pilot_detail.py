@@ -37,11 +37,14 @@ def pilot_detail(request,pilot_id):
     
     time_slice1=time_slice(pilot_id, date.today()-delta)
     mates,mates_pages=mates_page(request,pilot_id)
+    number_mates=num_mates(pilot_id, date.today()-delta)
+    
     #pilot1["id"]=pilot_id
     return render(request,"analizer/pilot_detail1.html",
                   {"pilot":pilot1,
                    "time_slice":time_slice1,
                    "mates":mates,
                    "mates_pages":mates_pages,
+                   "number_mates": number_mates
                    
                    })    
