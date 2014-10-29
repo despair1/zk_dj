@@ -23,8 +23,9 @@
 		<table>
 		{% for i in mates %}
 			<tr>
-				<td><a href="{% url 'analizer:pilot_detail' i.id %}">{{i.name}}</a></td>
+				<td><a href="{% url 'analizer:pilot_detail' i.pilot_id %}">{{i.pilot_name}}</a></td>
 				<td>{{i.kills}}</td>
+				<td><a href="{% url 'analizer:corp_detail' i.corp_id %}">{{i.corp_name}}</a></td>
 			</tr>
 		{% endfor %}
 		</table>
