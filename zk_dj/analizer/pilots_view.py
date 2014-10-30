@@ -6,7 +6,7 @@ Created on Sep 27, 2014
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from eve_api import character_id
+from analizer.tools import character_id
 from analizer.models import pilot
 import re 
 from analizer.tools.db_get_pilot import get_pilot_from_db

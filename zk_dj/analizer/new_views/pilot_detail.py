@@ -17,9 +17,11 @@ from django.db import connection
 sign_kill=2
 mates_per_page=15
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from analizer.new_views._num_mates import num_mates
+
+from num_mates import num_mates
 from analizer.new_views._time_slice import time_slice
 from analizer.new_views._mates_page import mates_page
+from ship_type import ship_types
 def pilot_detail(request,pilot_id):
     pilot1=get_pilot_by_id(pilot_id)
     if not pilot1: raise Http404
@@ -32,19 +34,21 @@ def pilot_detail(request,pilot_id):
     pilot1["number_kills"]=attacker.objects.filter(characterID=pilot_id).filter(killTime__gt=date.today()-delta1).count()
     pilot1["number_loss"]=kill.objects.filter(characterID=pilot_id).filter(killTime__gt=date.today()-delta1).count()
     #if pilot1["number_loss"]>0 or pilot1["number_kills"]>0:
-    pilot1["last_kill_time"]=kill.objects.filter(characterID=pilot_id).order_by("-killTime")[0].killTime
+    #pilot1["last_kill_time"]=kill.objects.filter(characterID=pilot_id).order_by("-killTime")[0].killTime
     
     
     time_slice1=time_slice(pilot_id, date.today()-delta)
     mates,mates_pages=mates_page(request,pilot_id)
     number_mates=num_mates(pilot_id, date.today()-delta)
-    
+    attacker_ships=ship_types(pilot_id, date.today()-delta)
+    print attacker_ships
     #pilot1["id"]=pilot_id
     return render(request,"analizer/pilot_detail1.html",
                   {"pilot":pilot1,
                    "time_slice":time_slice1,
                    "mates":mates,
                    "mates_pages":mates_pages,
-                   "number_mates": number_mates
+                   "number_mates": number_mates,
+                   "attacker_ships": attacker_ships,
                    
                    })    

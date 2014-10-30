@@ -68,6 +68,11 @@ DATABASES = {
             'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
             'PORT': '',                      # Set to empty string for default.
         },
+    'eve_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME' : "/home/despair1/test1/sqlite-latest.sqlite"
+    } ,
     'default1': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),

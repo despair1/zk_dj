@@ -53,6 +53,15 @@
 				<td>{{number_mates.blob}}</td>
 			</tr>
 		</table>
+		<h4> Attackers ships </h4>
+		<table>
+		{% for i in attacker_ships %}
+		<tr>
+			<td>{{i.ship}}</td>
+			<td>{{i.attacks}}</td>
+		</tr>
+		{% endfor %}
+		</table>
 		
 		<table>
 		{% for i in victim_list %}

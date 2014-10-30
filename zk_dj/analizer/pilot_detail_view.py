@@ -7,7 +7,7 @@ Created on Oct 2, 2014
 from django.shortcuts import render,get_object_or_404
 from models import pilot,corp,kill
 from tools.get_json import get_json_pilot
-from json_kills import json_utils
+#from json_kills import json_utils
 from django.db import transaction
 from tools.json2db import add_json2db
 from profiling import profile
