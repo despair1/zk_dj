@@ -22,6 +22,7 @@ from num_mates import num_mates
 from analizer.new_views._time_slice import time_slice
 from analizer.new_views._mates_page import mates_page
 from ship_type import ship_types
+from solar_systems import solar_systems
 def pilot_detail(request,pilot_id):
     pilot1=get_pilot_by_id(pilot_id)
     if not pilot1: raise Http404
@@ -41,7 +42,8 @@ def pilot_detail(request,pilot_id):
     mates,mates_pages=mates_page(request,pilot_id)
     number_mates=num_mates(pilot_id, date.today()-delta)
     attacker_ships=ship_types(pilot_id, date.today()-delta)
-    print attacker_ships
+    solar_system_kills=solar_systems(pilot_id, date.today()-delta)
+    #print attacker_ships
     #pilot1["id"]=pilot_id
     return render(request,"analizer/pilot_detail1.html",
                   {"pilot":pilot1,
@@ -50,5 +52,6 @@ def pilot_detail(request,pilot_id):
                    "mates_pages":mates_pages,
                    "number_mates": number_mates,
                    "attacker_ships": attacker_ships,
+                   "solar_system_kills":solar_system_kills,
                    
                    })    

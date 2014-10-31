@@ -12,7 +12,7 @@ def ship_types(pilot_id,start_time):
     where  "shipTypeID" <> 0 and
     "killID_id" in ( select "killID_id" from analizer_attacker 
         where "killTime" > %s and "characterID"=%s)    
-    group by "shipTypeID" order by cnt desc;
+    group by "shipTypeID" order by cnt desc limit 15;
     """,[start_time,pilot_id])
     r=cursor.fetchall()[0:15]
     ship_kills=[]

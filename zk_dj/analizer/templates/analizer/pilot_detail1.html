@@ -1,6 +1,11 @@
 <html>
 	<head>
 		<title>{{pilot.pilot_name}}</title>
+		<style> .tmp1 { 
+			float:left;
+			margin:5px;
+		}
+		</style>
 	</head>
 	<body>
 		{% if error_message %}
@@ -53,6 +58,7 @@
 				<td>{{number_mates.blob}}</td>
 			</tr>
 		</table>
+		<div class="tmp1">
 		<h4> Attackers ships </h4>
 		<table>
 		{% for i in attacker_ships %}
@@ -62,18 +68,18 @@
 		</tr>
 		{% endfor %}
 		</table>
+		</div>
 		
+		<div class="tmp1">
+		<h4> Solar Systems </h4>
 		<table>
-		{% for i in victim_list %}
-			<tr> 
-				<td><a href="{% url 'analizer:pilot_detail' i.pilot_id %}">{{i.pilot_name}}</a></td>
-				<td> {{i.corp_name}} </td> 
-				<td> {{i.ship_type}} </td>
-				<td> {{i.kill_time}} </td>
-			</tr>
+		{% for i in solar_system_kills %}
+		<tr>
+			<td>{{i.solar_system_name}}</td>
+			<td>{{i.kills}}</td>
+		</tr>
 		{% endfor %}
 		</table>
-
-
+		</div>
 	</body>
 </html>
