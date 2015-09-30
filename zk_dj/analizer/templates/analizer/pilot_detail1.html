@@ -6,6 +6,8 @@
 			margin:5px;
 		}
 		</style>
+		{% load staticfiles %}
+		<script type="text/javascript" src="{% static "analizer/test.js" %} "></script>
 	</head>
 	<body>
 		{% if error_message %}
@@ -24,7 +26,7 @@
 			<td> {{i.hour}}h {{i.kills}} kills ; </td>
 		{% endfor %}
 		</tr></table>
-		<h4> Mates </h4>
+		<h4 id="m1"> Mates </h4>
 		<table>
 		{% for i in mates %}
 			<tr>
